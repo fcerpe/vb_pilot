@@ -32,7 +32,7 @@ nbStimuli = size(toPresent);
 stimPosition = 1:nbStimuli;
 
 % Shuffle them: order nb + nb of repetitions
-presentationOrder = repeatShuffleConditions(stimPosition,3);
+presentationOrder = repeatShuffleConditions(nbStimuli,3);
 % cfg.design.nbTrials = size(presentationOrder,2); % As many trials as repeated stimuli
 
 %%  Experiment
@@ -68,7 +68,7 @@ try
         waitFor(cfg, cfg.timing.onsetDelay);
 
         for iTrial = 1:cfg.design.nbTrials
-            
+
             fprintf('\n - Running trial %.0f \n', iTrial);
 
             % Check for experiment abortion from operator
@@ -77,14 +77,15 @@ try
             [thisEvent, thisFixation, cfg] = preTrialSetup(cfg, iBlock, iTrial);
 
             % Get the current stimulus to present
-            thisStimulus = toPresent{presentationOrder(iBlock)};
+            thisStimulus = toPresent{iBlock};
             
             if isFrenchAlphabet(thisStimulus)
                 thisPresentation = getLettersCoord(thisStimulus);
             else
-                thisPresentation.stimulus = thisStimulus;
-                thisPresentation.alphabet = 'b';
+                thisPresentation.stimulus = 
             end
+            % the letters ragne, return true
+            thisPresentation = getLettersCoord(thisStimulus);
             
             % present the (non)word for a set amount of time 
             [onset, duration] = showStimulus(cfg, thisEvent, thisFixation, thisPresentation);

@@ -16,17 +16,17 @@ function [cfg] = setParameters()
 
     %% Debug mode settings
 
-    cfg.debug.do = false; % To test the script out of the scanner, skip PTB sync
+    cfg.debug.do = true; % To test the script out of the scanner, skip PTB sync
     cfg.debug.smallWin = false; % To test on a part of the screen, change to 1
     cfg.debug.transpWin = true; % To test with trasparent full size screen
 
-    cfg.verbose = 0;
+    cfg.verbose = 1;
 
     cfg.skipSyncTests = 0;
 
     %% Engine parameters
 
-    cfg.testingDevice = 'mri';
+    cfg.testingDevice = 'pc'; % laptop
     cfg.eyeTracker.do = false;
     cfg.audio.do = false;
 
@@ -42,20 +42,21 @@ function [cfg] = setParameters()
 
     %% Experiment Design
 
-    cfg.design.blockNames = {'condition_1', 'condition_2'};
+    %                          FR words       BR words      FR nonwords    BR nonwords
+    cfg.design.blockNames = {'condition_1', 'condition_2', 'condition_3', 'condition_4'};
 
-    cfg.design.nbBlocks = 2;
-    cfg.design.nbTrials = 4;
+    cfg.design.nbBlocks = 4;
+    cfg.design.nbTrials = 1; % Minimum for now
 
     %% Timing
 
     % FOR 7T: if you want to create localizers on the fly, the following must be
-    % multiples of the scanneryour sequence TR
+    % multiples of the scanner your sequence TR
     %
     % IBI
     % block length = (cfg.eventDuration + cfg.ISI) * cfg.design.nbEventsPerBlock
 
-    cfg.timing.eventDuration = 2; % second
+    cfg.timing.eventDuration = 3; % second
 
     % Time between blocs in secs
     cfg.timing.IBI = 2;
@@ -87,11 +88,12 @@ function [cfg] = setParameters()
 
     %% Task(s)
 
-    cfg.task.name = 'template PTB experiment';
+    cfg.task.name = 'Lexical decision task';
 
     % Instruction
-    cfg.task.instruction = '1-Detect the RED fixation cross\n \n\n';
-
+    cfg.task.instruction = 'Vous allez régarder des séquences de lettres.\nChaque fois, vous devrez répondre en disant si c''est un mot ou non\n\n';
+    cfg.task.responseMessage = 'Est-ce un mot (''X'') ou non (''N'')?';
+    
     % Fixation cross (in pixels)
     cfg.fixation.type = 'cross';
     cfg.fixation.colorTarget = cfg.color.red;
@@ -105,19 +107,13 @@ function [cfg] = setParameters()
     cfg.target.duration = 0.1; % In secs
 
     cfg.extraColumns = { ...
-                        'target', ...
-                        'event', ...
-                        'block', ...
                         'keyName'};
 
 end
 
 function cfg = setKeyboards(cfg)
     cfg.keyboard.escapeKey = 'ESCAPE';
-    cfg.keyboard.responseKey = { ...
-                                'r', 'g', 'y', 'b', ...
-                                'd', 'n', 'z', 'e', ...
-                                't'};
+    cfg.keyboard.responseKey = {'n', 'x'};
     cfg.keyboard.keyboard = [];
     cfg.keyboard.responseBox = [];
 
@@ -150,8 +146,8 @@ function cfg = setMonitor(cfg)
     cfg.text.color = cfg.color.white;
 
     % Monitor parameters
-    cfg.screen.monitorWidth = 50; % in cm
-    cfg.screen.monitorDistance = 40; % distance from the screen in cm
+    cfg.screen.monitorWidth = 30; % in cm
+    cfg.screen.monitorDistance = 60; % distance from the screen in cm
 
     if strcmpi(cfg.testingDevice, 'mri')
         cfg.screen.monitorWidth = 25;
